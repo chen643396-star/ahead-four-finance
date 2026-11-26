@@ -1244,7 +1244,7 @@ function flsgParse(wb){
   const numF=v=>{ if(v==null)return null; const s=String(v).replace(/[,，\s]/g,""); return /^-?\d+(\.\d+)?$/.test(s)?parseFloat(s):null; };
   const P=(v,tier)=>{ const n=numF(v); if(n==null) return null; if(tier&&/CBM/i.test(tier)) return n>0?n:null; return (n>0&&n<50)?n:null; };   /* 护栏：/KG 档拒 >=50 脏数据(华东12KG+偶现1450)；/CBM 档(1CBM+~1450)放行 */
   const getAO=n=>XLSX.utils.sheet_to_json(wb.Sheets[n],{header:1,defval:"",raw:false}).map(r=>(r||[]).map(c=>c==null?"":String(c).trim()));
-  const baseCh=s=>{ let t=normCh(s); t=t.replace(/\d+天/g,"").replace("限时提",""); return t.trim(); };
+  const baseCh=s=>{ let t=normCh(s); t=t.split(/下单服务[：:]/)[0]; t=t.replace(/\d+天/g,"").replace("限时提",""); return t.trim(); };
   const fbaSet=t=>{ const m=String(t||"").match(/[A-Z]{3,4}\d{1,2}[A-Z]?/g); return m?new Set(m):new Set(); };
   const q={};
   /* 列索引为 0-based；华南=前段列、华东=后段列，与 tier 名按序对齐（盐田OA 另含 1CBM+ 档） */
